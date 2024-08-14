@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:totalx_machine_task/src/config/app_textstyles.dart';
+import 'package:totalx_machine_task/src/config/navigators.dart';
 import 'package:totalx_machine_task/src/config/strings.dart';
+import 'package:totalx_machine_task/src/feature/auth/presentation/views/otp_verification_page.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/widgets/custom_input_field.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/widgets/filled_button_lg.dart';
 
@@ -32,14 +34,13 @@ class LoginPage extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 15),
-              continueHelperWidget(
-                helperTextStyle1,
-                helperTextStyle2,
-              ),
+              continueHelperWidget(),
               const SizedBox(height: 25),
               FilledButtonLg(
                 text: 'Get OTP',
-                onPressed: () {},
+                onPressed: () {
+                  nextScreen(context, const OtpVerificationPage());
+                },
               ),
             ],
           ),
@@ -48,11 +49,8 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Text continueHelperWidget(
-    TextStyle helperTextStyle1,
-    TextStyle helperTextStyle2,
-  ) {
-    return Text.rich(
+  Text continueHelperWidget() {
+    return const Text.rich(
       TextSpan(
         children: [
           TextSpan(
