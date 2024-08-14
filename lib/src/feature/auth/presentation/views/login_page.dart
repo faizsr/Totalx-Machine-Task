@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:totalx_machine_task/src/config/app_textstyles.dart';
-import 'package:totalx_machine_task/src/config/navigators.dart';
 import 'package:totalx_machine_task/src/config/strings.dart';
-import 'package:totalx_machine_task/src/feature/auth/presentation/views/otp_verification_page.dart';
+import 'package:totalx_machine_task/src/feature/auth/presentation/providers/auth_provider.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/widgets/custom_input_field.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/widgets/filled_button_lg.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final numberController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  bool enableButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -15,38 +24,55 @@ class LoginPage extends StatelessWidget {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
-                child: Image(
-                  image: AssetImage(loginLogo),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Image(
+                    image: AssetImage(loginLogo),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 50),
-              const Text(
-                'Enter Phone Number',
-                style: subHeadingTextStyle,
-              ),
-              const SizedBox(height: 15),
-              const CustomInputField(
-                hintText: 'Enter Phone Number *',
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 15),
-              continueHelperWidget(),
-              const SizedBox(height: 25),
-              FilledButtonLg(
-                text: 'Get OTP',
-                onPressed: () {
-                  nextScreen(context, const OtpVerificationPage());
-                },
-              ),
-            ],
+                const SizedBox(height: 50),
+                const Text(
+                  'Enter Phone Number',
+                  style: subHeadingTextStyle,
+                ),
+                const SizedBox(height: 15),
+                CustomInputField(
+                  controller: numberController,
+                  hintText: 'Enter Phone Number *',
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    enableButton = false;
+                    if (value.isNotEmpty) {
+                      enableButton = true;
+                    }
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(height: 15),
+                continueHelperWidget(),
+                const SizedBox(height: 25),
+                FilledButtonLg(
+                  text: 'Get OTP',
+                  onPressed: enableButton ? onGetOtpPressed : null,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void onGetOtpPressed() {
+    if (formKey.currentState!.validate()) {
+      final number = '+91${numberController.text}';
+      Provider.of<AuthProvider>(context, listen: false)
+          .sentOtp(number, context);
+    }
   }
 
   Text continueHelperWidget() {
