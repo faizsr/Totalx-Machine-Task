@@ -32,7 +32,9 @@ class _UserListPageState extends State<UserListPage> {
   void initState() {
     manageUserProvider =
         Provider.of<ManageUserProvider>(context, listen: false);
-    manageUserProvider.getAllUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      manageUserProvider.getAllUser();
+    });
     super.initState();
   }
 
