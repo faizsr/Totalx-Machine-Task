@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:totalx_machine_task/src/feature/auth/domain/usecases/get_login_status_usecase.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/providers/auth_provider.dart';
-import 'package:totalx_machine_task/src/feature/auth/presentation/views/login_page.dart';
+// import 'package:totalx_machine_task/src/feature/auth/presentation/views/login_page.dart';
 import 'package:totalx_machine_task/src/feature/user_management/presentation/views/user_list_page.dart';
 import 'injection_container.dart' as di;
 
@@ -37,13 +35,12 @@ class MyApp extends StatelessWidget {
           home: FutureBuilder<bool>(
             future: di.getIt.get<GetLoginStatusUsecase>().call(),
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                log('Has data: ${snapshot.data}');
-                return snapshot.data ?? false
-                    ? const UserListPage()
-                    : const LoginPage();
-              }
-              return const LoginPage();
+              // if (snapshot.hasData) {
+              //   return snapshot.data ?? false
+              //       ? const UserListPage()
+              //       : const LoginPage();
+              // }
+              return const UserListPage();
             },
           ),
         ),
