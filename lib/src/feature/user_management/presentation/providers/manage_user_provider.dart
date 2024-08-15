@@ -16,6 +16,7 @@ class ManageUserProvider extends ChangeNotifier {
   });
   bool addLoading = false;
   bool getLoading = false;
+  FilterType filterValue = FilterType.all;
 
   List<UserEntity> users = [];
 
@@ -24,8 +25,9 @@ class ManageUserProvider extends ChangeNotifier {
     FilterType filterType = FilterType.all,
   }) async {
     getLoading = true;
+    filterValue = filterType;
     notifyListeners();
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     final dataStream = getAllUsersUsecase.call();
     dataStream.listen(

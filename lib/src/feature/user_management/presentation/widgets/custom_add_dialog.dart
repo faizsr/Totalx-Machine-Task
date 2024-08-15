@@ -69,6 +69,7 @@ class _CustomAddDialogState extends State<CustomAddDialog> {
                   hintText: 'Enter age',
                   validator: validateAge,
                   controller: ageContoller,
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20),
                 Row(

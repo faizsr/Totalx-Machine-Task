@@ -10,8 +10,15 @@ import 'package:totalx_machine_task/src/feature/user_management/presentation/wid
 import 'package:totalx_machine_task/src/feature/user_management/presentation/widgets/user_card_loading.dart';
 import 'package:totalx_machine_task/src/feature/user_management/presentation/widgets/user_list_appbar.dart';
 
-class UserListPage extends StatelessWidget {
+class UserListPage extends StatefulWidget {
   const UserListPage({super.key});
+
+  @override
+  State<UserListPage> createState() => _UserListPageState();
+}
+
+class _UserListPageState extends State<UserListPage> {
+  late ManageUserProvider manageUserProvider;
 
   void onSearch(String value, BuildContext context) {
     final debouncer = Debouncer(milliseconds: 500);
@@ -22,11 +29,15 @@ class UserListPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ManageUserProvider>(context, listen: false).getAllUser();
-    });
+  void initState() {
+    manageUserProvider =
+        Provider.of<ManageUserProvider>(context, listen: false);
+    manageUserProvider.getAllUser();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade200,

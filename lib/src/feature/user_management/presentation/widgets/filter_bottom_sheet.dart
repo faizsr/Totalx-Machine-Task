@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:totalx_machine_task/src/config/app_textstyles.dart';
@@ -14,8 +16,6 @@ class FilterBottomSheet extends StatefulWidget {
 enum FilterType { all, elder, younger }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  FilterType _filterType = FilterType.all;
-
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
@@ -31,15 +31,15 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               const SizedBox(height: 10),
               radioListTile(
                 title: 'All',
-                value: FilterType.all,
+                filterType: FilterType.all,
               ),
               radioListTile(
                 title: 'Age: Elder',
-                value: FilterType.elder,
+                filterType: FilterType.elder,
               ),
               radioListTile(
                 title: 'Age: Younger',
-                value: FilterType.younger,
+                filterType: FilterType.younger,
               ),
             ],
           ),
@@ -50,17 +50,21 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   Widget radioListTile({
     required String title,
-    required FilterType value,
+    required FilterType filterType,
   }) {
-    return CustomRadioListTile(
-      title: title,
-      value: value,
-      groupValue: _filterType,
-      onChanged: (FilterType value) {
-        _filterType = value;
-        setState(() {});
-        Provider.of<ManageUserProvider>(context, listen: false)
-            .getAllUser(filterType: _filterType);
+    return Consumer<ManageUserProvider>(
+      builder: (context, value, child) {
+        log('Filter Type: ${value.filterValue}');
+        return CustomRadioListTile(
+          title: title,
+          value: filterType,
+          groupValue: value.filterValue,
+          onChanged: (FilterType value) {
+            log('Value: $value');
+            Provider.of<ManageUserProvider>(context, listen: false)
+                .getAllUser(filterType: value);
+          },
+        );
       },
     );
   }

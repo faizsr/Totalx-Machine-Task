@@ -35,6 +35,7 @@ Future<void> init() async {
     () => AuthProvider(
       sendOtpUsecase: getIt.call(),
       verifyOtpUsecase: getIt.call(),
+      logoutUsecase: getIt.call(),
       setLoginStatusUsecase: getIt.call(),
     ),
   );
