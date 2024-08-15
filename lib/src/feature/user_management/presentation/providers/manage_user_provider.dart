@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:totalx_machine_task/src/feature/user_management/domain/entities/user_entity.dart';
 import 'package:totalx_machine_task/src/feature/user_management/domain/usecases/add_user_usecase.dart';
@@ -20,10 +22,21 @@ class ManageUserProvider extends ChangeNotifier {
   getAllUser() async {
     getLoading = true;
     notifyListeners();
+    await Future.delayed(const Duration(seconds: 3));
 
-    users = await getAllUsersUsecase.call();
-    getLoading = false;
-    notifyListeners();
+    final dataStream = getAllUsersUsecase.call();
+    dataStream.listen(
+      (usersList) {
+        users = usersList;
+        getLoading = false;
+        notifyListeners();
+        log('Popular: ${users.length}');
+      },
+    ).onError((error) {
+      log('Error from fetching all destinations: $error');
+      addLoading = false;
+      notifyListeners();
+    });
   }
 
   addUser(UserEntity user) async {

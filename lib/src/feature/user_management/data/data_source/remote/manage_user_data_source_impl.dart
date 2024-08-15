@@ -39,7 +39,18 @@ class ManageUserDataSourceImpl implements ManageUserDataSource {
   }
 
   @override
-  Future<List<UserEntity>> getAllUsers() {
-    throw UnimplementedError();
+  Stream<List<UserEntity>> getAllUsers() {
+    final data = fireStore.collection('users').snapshots().map(
+      (snapshot) {
+        return snapshot.docs.map(
+          (doc) {
+            final data = doc.data();
+            final userModel = UserModel.fromJson(data);
+            return UserMapper.mapToEntity(userModel);
+          },
+        ).toList();
+      },
+    );
+    return data;
   }
 }

@@ -13,7 +13,7 @@ class ManageUserRepositoryImpl implements ManageUserRepository {
   }
 
   @override
-  Future<List<UserEntity>> getAllUsers() async {
-    return await manageUserDataSource.getAllUsers();
+  Stream<List<UserEntity>> getAllUsers() {
+    return manageUserDataSource.getAllUsers();
   }
 }

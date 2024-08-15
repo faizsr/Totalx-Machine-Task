@@ -6,7 +6,7 @@ class GetAllUsersUsecase {
 
   GetAllUsersUsecase({required this.manageUserRepository});
 
-  Future<List<UserEntity>> call() async {
-    return await manageUserRepository.getAllUsers();
+  Stream<List<UserEntity>> call() {
+    return manageUserRepository.getAllUsers();
   }
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:totalx_machine_task/src/config/strings.dart';
+import 'package:totalx_machine_task/src/feature/user_management/domain/entities/user_entity.dart';
 
 class UserCard extends StatelessWidget {
+  final UserEntity user;
   const UserCard({
     super.key,
+    required this.user,
   });
 
   @override
@@ -22,27 +25,30 @@ class UserCard extends StatelessWidget {
           )
         ],
       ),
-      child: const Row(
+      child: Row(
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage(userPlaceholder),
+            backgroundColor: Colors.white,
+            backgroundImage: user.profile == null
+                ? const AssetImage(userPlaceholder)
+                : NetworkImage(user.profile!),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Martin Dokidis',
-                style: TextStyle(
+                user.name,
+                style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
-                'Age: 34',
-                style: TextStyle(
+                'Age: ${user.age}',
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),

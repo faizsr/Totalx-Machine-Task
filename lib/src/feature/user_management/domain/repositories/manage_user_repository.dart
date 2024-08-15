@@ -2,5 +2,5 @@ import 'package:totalx_machine_task/src/feature/user_management/domain/entities/
 
 abstract class ManageUserRepository {
   Future<void> addUser(UserEntity user);
-  Future<List<UserEntity>> getAllUsers();
+  Stream<List<UserEntity>> getAllUsers();
 }
