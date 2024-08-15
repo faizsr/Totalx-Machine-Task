@@ -13,6 +13,13 @@ import 'package:totalx_machine_task/src/feature/auth/domain/usecases/send_otp_us
 import 'package:totalx_machine_task/src/feature/auth/domain/usecases/set_login_status_usecase.dart';
 import 'package:totalx_machine_task/src/feature/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/providers/auth_provider.dart';
+import 'package:totalx_machine_task/src/feature/user_management/data/data_source/remote/manage_user_data_source.dart';
+import 'package:totalx_machine_task/src/feature/user_management/data/data_source/remote/manage_user_data_source_impl.dart';
+import 'package:totalx_machine_task/src/feature/user_management/data/repositories/manage_user_repository_impl.dart';
+import 'package:totalx_machine_task/src/feature/user_management/domain/repositories/manage_user_repository.dart';
+import 'package:totalx_machine_task/src/feature/user_management/domain/usecases/add_user_usecase.dart';
+import 'package:totalx_machine_task/src/feature/user_management/domain/usecases/get_all_users_usecase.dart';
+import 'package:totalx_machine_task/src/feature/user_management/presentation/providers/manage_user_provider.dart';
 
 final getIt = GetIt.instance;
 
@@ -29,6 +36,12 @@ Future<void> init() async {
       sendOtpUsecase: getIt.call(),
       verifyOtpUsecase: getIt.call(),
       setLoginStatusUsecase: getIt.call(),
+    ),
+  );
+  getIt.registerFactory<ManageUserProvider>(
+    () => ManageUserProvider(
+      addUserUsecase: getIt.call(),
+      getAllUsersUsecase: getIt.call(),
     ),
   );
 
@@ -48,6 +61,12 @@ Future<void> init() async {
   getIt.registerLazySingleton<LogoutUsecase>(
     () => LogoutUsecase(authRepository: getIt.call()),
   );
+  getIt.registerLazySingleton<AddUserUsecase>(
+    () => AddUserUsecase(manageUserRepository: getIt.call()),
+  );
+  getIt.registerLazySingleton<GetAllUsersUsecase>(
+    () => GetAllUsersUsecase(manageUserRepository: getIt.call()),
+  );
 
   // ------ Repositories ------
   getIt.registerLazySingleton<AuthRepository>(
@@ -56,10 +75,18 @@ Future<void> init() async {
       authLocalDatasource: getIt.call(),
     ),
   );
+  getIt.registerLazySingleton<ManageUserRepository>(
+    () => ManageUserRepositoryImpl(
+      manageUserDataSource: getIt.call(),
+    ),
+  );
 
   // ------ Data Sources (Remote) ------
   getIt.registerLazySingleton<AuthRemoteDatasource>(
     () => AuthRemoteDatasourceImpl(),
+  );
+  getIt.registerLazySingleton<ManageUserDataSource>(
+    () => ManageUserDataSourceImpl(),
   );
 
   // ------ Data Sources (Local) ------

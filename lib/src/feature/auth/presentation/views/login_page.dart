@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:totalx_machine_task/src/config/app_textstyles.dart';
 import 'package:totalx_machine_task/src/config/strings.dart';
+import 'package:totalx_machine_task/src/config/validators.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/providers/auth_provider.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/widgets/custom_input_field.dart';
 import 'package:totalx_machine_task/src/feature/auth/presentation/widgets/filled_button_lg.dart';
@@ -44,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: numberController,
                   hintText: 'Enter Phone Number *',
                   keyboardType: TextInputType.number,
+                  validator: validatePhone,
                   onChanged: (value) {
                     enableButton = false;
                     if (value.isNotEmpty) {
