@@ -6,6 +6,7 @@ class CustomInputField extends StatelessWidget {
   final String? hintText;
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
+  final String? Function(String?)? validator;
 
   const CustomInputField({
     super.key,
@@ -13,6 +14,7 @@ class CustomInputField extends StatelessWidget {
     this.hintText,
     this.keyboardType,
     this.onChanged,
+    this.validator,
   });
 
   @override
@@ -22,15 +24,7 @@ class CustomInputField extends StatelessWidget {
       keyboardType: keyboardType,
       style: const TextStyle(fontSize: 14),
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return null;
-        }
-        if (value.length < 10) {
-          return 'Enter Valid Phone Number';
-        }
-        return null;
-      },
+      validator: validator,
       onChanged: onChanged,
       inputFormatters: [
         LengthLimitingTextInputFormatter(10),

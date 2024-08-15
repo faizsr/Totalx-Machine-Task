@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:totalx_machine_task/src/feature/auth/domain/usecases/logout_usecase.dart';
 import 'package:totalx_machine_task/src/feature/auth/domain/usecases/send_otp_usecase.dart';
 import 'package:totalx_machine_task/src/feature/auth/domain/usecases/set_login_status_usecase.dart';
 import 'package:totalx_machine_task/src/feature/auth/domain/usecases/verify_otp_usecase.dart';
@@ -6,11 +7,13 @@ import 'package:totalx_machine_task/src/feature/auth/domain/usecases/verify_otp_
 class AuthProvider extends ChangeNotifier {
   final SendOtpUsecase sendOtpUsecase;
   final VerifyOtpUsecase verifyOtpUsecase;
+  final LogoutUsecase logoutUsecase;
   final SetLoginStatusUsecase setLoginStatusUsecase;
 
   AuthProvider({
     required this.sendOtpUsecase,
     required this.verifyOtpUsecase,
+    required this.logoutUsecase,
     required this.setLoginStatusUsecase,
   });
 
@@ -40,5 +43,9 @@ class AuthProvider extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
     return response;
+  }
+
+  Future<void> logout() async {
+    await logoutUsecase.call();
   }
 }
